@@ -6,6 +6,6 @@ resource "aws_db_instance" "edafun" {
   instance_class       = "db.t4g.micro"
   db_name              = "edafun"
   username             = "eda"
-  password             = "admin"
+  password             = "edafunadmin"
   parameter_group_name = "test-instance-postgres-14.1"
 }
