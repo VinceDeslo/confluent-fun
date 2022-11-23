@@ -17,7 +17,6 @@ resource "aws_db_instance" "edafun" {
   port                 = 5432
 
   allocated_storage    = 10
-  publicly_accessible = true
   skip_final_snapshot  = true
   
   db_subnet_group_name = module.vpc.database_subnet_group
