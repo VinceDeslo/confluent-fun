@@ -5,7 +5,7 @@ pub struct Config {
     aws_access_key_id: String,
     aws_secret_access_key: String,
     aws_region: String,
-    aws_rds_connection: String,
+    database_url: String,
     confluent_bootstrap_server: String,
     confluent_api_key: String,
     confluent_api_secret: String,
@@ -20,8 +20,8 @@ pub fn load_config() -> Config {
         .expect("AWS_SECRET_ACCESS_KEY must be set."); 
     let aws_region = std::env::var("AWS_REGION")
         .expect("AWS_REGION must be set.");
-    let aws_rds_connection = std::env::var("AWS_RDS_CONNECTION")
-        .expect("AWS_RDS_CONNECTION must be set.");
+    let database_url = std::env::var("DATABASE_URL")
+        .expect("DATABASE_URL must be set.");
     let confluent_bootstrap_server = std::env::var("CONFLUENT_BOOTSTRAP_SERVER")
         .expect("CONFLUENT_BOOTSTRAP_SERVER must be set."); 
     let confluent_api_key = std::env::var("CONFLUENT_API_KEY")
@@ -33,7 +33,7 @@ pub fn load_config() -> Config {
         aws_access_key_id,
         aws_secret_access_key,
         aws_region,
-        aws_rds_connection,
+        database_url,
         confluent_bootstrap_server,
         confluent_api_key,
         confluent_api_secret,
