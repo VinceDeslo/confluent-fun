@@ -5,9 +5,11 @@ Here is the breakdown:
 
 # Stack
 - Rust
-- gRPC
-- Kafka (Confluent)
-- RDS (AWS Postgres instance)
+- gRPC (Tonic)
+- Postgres (AWS RDS instance)
+- Diesel (ORM)
+- Kafka (Confluent Cloud Event Sourcing)
+- Terraform (Provisioning the DB)
 
 # Architecture
 ```mermaid
