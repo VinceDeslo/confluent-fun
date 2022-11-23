@@ -5,7 +5,7 @@ pub struct Config {
     aws_access_key_id: String,
     aws_secret_access_key: String,
     aws_region: String,
-    database_url: String,
+    pub database_url: String,
     confluent_bootstrap_server: String,
     confluent_api_key: String,
     confluent_api_secret: String,
