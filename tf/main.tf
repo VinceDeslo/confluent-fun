@@ -7,5 +7,5 @@ resource "aws_db_instance" "edafun" {
   db_name              = "edafun"
   username             = "eda"
   password             = "edafunadmin"
-  parameter_group_name = "test-instance-postgres-14.1"
+  skip_final_snapshot  = true
 }
