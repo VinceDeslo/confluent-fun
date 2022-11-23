@@ -4,8 +4,10 @@ resource "aws_db_instance" "edafun" {
   engine               = "postgres"
   engine_version       = "14.1"
   instance_class       = "db.t4g.micro"
+  identifier           = "edafun"
   db_name              = "edafun"
   username             = "eda"
   password             = "edafunadmin"
+  publicly_accessible = true
   skip_final_snapshot  = true
 }
