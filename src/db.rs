@@ -47,10 +47,10 @@ pub fn update_user(
         .expect("Error updating existing user.")
 }
 
-pub fn delete_user(conn: &mut PgConnection, id: i32) -> usize {
+pub fn delete_user(conn: &mut PgConnection, user_id: i32) -> usize {
     use crate::schema::users::dsl::*;
 
-    diesel::delete(users.find(id))
+    diesel::delete(users.filter(id.eq(user_id)))
         .execute(conn)
         .expect("Error deleting existing user.")
 }

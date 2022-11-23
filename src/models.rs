@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use crate::schema::users;
 
-#[derive(Queryable)]
+#[derive(Queryable, Debug)]
 pub struct User {
     pub id: i32,
     pub name: String,
