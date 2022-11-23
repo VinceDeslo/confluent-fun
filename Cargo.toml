@@ -3,6 +3,10 @@ name = "eda-fun"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "server"
+path = "src/server.rs"
+
 [dependencies]
 aws-config = "0.51.0"
 aws-sdk-rds = "0.21.0"
@@ -10,5 +14,10 @@ diesel = { version = "2.0.2", features = ["postgres"] }
 dotenv = "0.15.0"
 env_logger = "0.9.3"
 log = "0.4.17"
+prost = "0.11.2"
 rdkafka = "0.29.0"
+tokio = { version = "1.22.0", features = ["macros", "rt-multi-thread"] }
 tonic = "0.8.2"
+
+[build-dependencies]
+tonic-build = "0.8.2"
