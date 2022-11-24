@@ -17,11 +17,10 @@ resource "aws_db_instance" "edafun" {
   port                 = 5432
 
   allocated_storage    = 10
-  publicly_accessible  = true  
   skip_final_snapshot  = true
   
-  # db_subnet_group_name = module.vpc.database_subnet_group
-  # vpc_security_group_ids = [module.security_group.security_group_id]
+  db_subnet_group_name = module.vpc.database_subnet_group
+  vpc_security_group_ids = [module.security_group.security_group_id]
 }
 
 module "vpc" {
@@ -50,18 +49,18 @@ module "security_group" {
 
   ingress_with_cidr_blocks = [
     {
-      from_port   = 5432
-      to_port     = 5432
-      protocol    = "tcp"
-      description = "PostgreSQL access from within VPC"
-      cidr_blocks = module.vpc.vpc_cidr_block
-    },
-    {
       from_port = 5432
       to_port = 5432
       protocol = "tcp"
       description = "Public access"
       cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "PostgreSQL access from within VPC"
+      cidr_blocks = module.vpc.vpc_cidr_block
     }
   ]
 }
