@@ -8,7 +8,7 @@ locals {
 resource "aws_db_instance" "edafun" {
   identifier           = local.name
   engine               = "postgres"
-  # engine_version       = "14.3"
+  engine_version       = "14.3"
   instance_class       = "db.t4g.micro"
   
   db_name              = "edafun"
@@ -55,5 +55,12 @@ module "security_group" {
       description = "PostgreSQL access from within VPC"
       cidr_blocks = module.vpc.vpc_cidr_block
     },
+    {
+      from_port = 5432
+      to_port = 5432
+      protocol = "tcp"
+      description = "Personnal access"
+      cidr_blocks = "174.89.236.0/24"
+    }
   ]
 }
