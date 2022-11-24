@@ -59,8 +59,8 @@ module "security_group" {
       from_port = 5432
       to_port = 5432
       protocol = "tcp"
-      description = "Personnal access"
-      cidr_blocks = "174.89.236.0/24"
+      description = "Public access"
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 }
