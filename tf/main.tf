@@ -8,7 +8,7 @@ locals {
 resource "aws_db_instance" "edafun" {
   identifier           = local.name
   engine               = "postgres"
-  engine_version       = "14.1"
+  engine_version       = "14.3"
   instance_class       = "db.t4g.micro"
   
   db_name              = "edafun"

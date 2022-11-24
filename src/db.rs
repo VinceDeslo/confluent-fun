@@ -6,6 +6,7 @@ use crate::models::{User, NewUser};
 use crate::schema::users;
 
 pub fn establish_connection(conf: &Config) -> PgConnection {
+    println!("Establishing connection with: {}", &conf.database_url);
     PgConnection::establish(&conf.database_url[..])
         .unwrap_or_else(|_| panic!("Error connecting to {}", conf.database_url))
 }
