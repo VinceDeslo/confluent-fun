@@ -1,59 +1,44 @@
-provider "aws" {}
-
-locals {
-  name    = "edafun"
-  region  = "ca-central-1"
+provider "aws" {
+  region = "ca-central-1"
 }
 
-resource "aws_db_instance" "edafun" {
-  identifier           = local.name
-  engine               = "postgres"
-  engine_version       = "14.3"
-  instance_class       = "db.t4g.micro"
-  
-  db_name              = "edafun"
-  username             = "eda"
-  password             = "edafunadmin"
-  port                 = 5432
-
-  allocated_storage    = 10
-  skip_final_snapshot  = true
-  
-  db_subnet_group_name = module.vpc.database_subnet_group
-  vpc_security_group_ids = [module.security_group.security_group_id]
+resource "aws_rds_cluster" "eda-fun" {
+  cluster_identifier = "eda-fun-cluster"
+  engine             = "aurora-postgresql"
+  engine_version     = "14.0"
+  availability_zones = ["ca-central-1a", "ca-central-1b"]
+  backup_retention_period = 5
+  port = 5432
+  master_username = "admin"
+  master_password = "password"
+  skip_final_snapshot = true
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
 }
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+resource "aws_security_group" "rds_sg" {
+  name        = "rds_sg"
+  description = "Security group for RDS instances"
+  vpc_id      = aws_vpc.vpc.id
 
-  name = local.name
-  cidr = "10.99.0.0/18"
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-  azs              = ["${local.region}a", "${local.region}b"]
-  public_subnets   = ["10.99.0.0/24", "10.99.1.0/24", "10.99.2.0/24"]
-  private_subnets  = ["10.99.3.0/24", "10.99.4.0/24", "10.99.5.0/24"]
-  database_subnets = ["10.99.7.0/24", "10.99.8.0/24", "10.99.9.0/24"]
-
-  create_database_subnet_group       = true
-  create_database_subnet_route_table = true
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
-module "security_group" {
-  source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+resource "aws_vpc" "vpc" {
+  cidr_block = "10.0.0.0/16"
 
-  name        = local.name
-  description = "EDA fun project security group"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 5432
-      to_port     = 5432
-      protocol    = "tcp"
-      description = "PostgreSQL access from within VPC"
-      cidr_blocks = module.vpc.vpc_cidr_block
-    }
-  ]
+  tags = {
+    Name = "eda-fun-vpc"
+  }
 }
