@@ -11,15 +11,17 @@ use tonic::{transport::Server, Request, Response, Status };
 use users::users_service_server::{UsersService, UsersServiceServer};
 use users::{
     CreateUserRequest, CreateUserResponse,
-    // ReadUserRequest, ReadUserResponse,
-    // UpdateUserRequest, UpdateUserResponse, 
-    // DeleteUserRequest, DeleteUserResponse,
+    ReadUserRequest, ReadUserResponse,
+    UpdateUserRequest, UpdateUserResponse, 
+    DeleteUserRequest, DeleteUserResponse,
 };
 
 use crate::config::{Config, load_config};
 use crate::db::{
     establish_connection,
     create_user,
+    get_users,
+    get_user,
 };
 
 #[derive(Debug)]
@@ -45,6 +47,43 @@ impl UsersService for Service {
 
         println!("end Create User operation.");
         Ok(Response::new(reply))
+    }
+
+    async fn read_user(
+        &self,
+        request: Request<ReadUserRequest>,
+    ) -> Result<Response<ReadUserResponse>, Status> {
+        todo!();
+
+        println!("start Read User operation.");
+        let conn = &mut establish_connection(&self.config);
+        let req = request.get_ref();
+        println!("Request payload: {:#?}", &req);
+
+        let user = get_user(conn, req.id);
+        let reply = users::ReadUserResponse {
+            id: user.id,
+            name: user.name,
+            bio: user.bio,
+            active: user.active,
+        };
+
+        println!("end Read User operation.");
+        Ok(Response::new(reply))
+    }
+
+    async fn update_user(
+        &self,
+        request: Request<UpdateUserRequest>,
+    ) -> Result<Response<UpdateUserResponse>, Status> {
+        todo!();
+    }
+
+    async fn delete_user(
+        &self,
+        request: Request<DeleteUserRequest>,
+    ) -> Result<Response<DeleteUserResponse>, Status> {
+        todo!();
     }
 }
 

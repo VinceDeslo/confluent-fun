@@ -21,6 +21,15 @@ pub fn get_users(conn: &mut PgConnection) -> Vec<User> {
         .expect("Error loading users")
 }
 
+pub fn get_user(conn: &mut PgConnection, user_id: i32) -> User {
+    use crate::schema::users::dsl::*;
+
+    users
+        .filter(id.eq(user_id))
+        .first(conn)
+        .expect("Error loading users")
+}
+
 pub fn create_user(
     conn: &mut PgConnection,
     name: &str,

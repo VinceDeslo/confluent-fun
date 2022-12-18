@@ -3,9 +3,9 @@ package users;
 
 service UsersService {
     rpc CreateUser(CreateUserRequest) returns (CreateUserResponse){}
-    // rpc ReadUser(ReadUserRequest) returns (ReadUserResponse){}
-    // rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse){}
-    // rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){}
+    rpc ReadUser(ReadUserRequest) returns (ReadUserResponse){}
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse){}
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){}
 }
 
 message CreateUserRequest {
@@ -16,12 +16,33 @@ message CreateUserResponse {
     int32 id = 1;
 }
 
-// message ReadUserRequest {}
-// message ReadUserResponse {}
+message ReadUserRequest {
+    int32 id = 1;
+}
+message ReadUserResponse {
+    int32 id = 1;
+    string name = 2;
+    string bio = 3;
+    bool active = 4;
+}
 
-// message UpdateUserRequest {}
-// message UpdateUserResponse {}
+message UpdateUserRequest {
+    int32 id = 1;
+    string name = 2;
+    string bio = 3;
+}
+message UpdateUserResponse {
+    int32 id = 1;
+    string name = 2;
+    string bio = 3;
+    bool active = 4;
+}
 
-// message DeleteUserRequest {}
-// message DeleteUserResponse {}
+message DeleteUserRequest { 
+    int32 id = 1; 
+}
+
+message DeleteUserResponse {
+    int32 deleted = 1;
+}
 
