@@ -5,9 +5,21 @@ use crate::config::Config;
 use crate::models::{User, NewUser};
 use crate::schema::users;
 
+fn build_db_conn_str(conf: &Config) -> String {
+    let mut conn_str = "".to_owned();
+    conn_str.push_str(&conf.database_protocol);
+    conn_str.push_str(&conf.database_user);
+    conn_str.push_str(&conf.database_password);
+    conn_str.push_str(&conf.database_url);
+    conn_str.push_str(&conf.database_port);
+    conn_str.push_str(&conf.database_name);
+    return conn_str;
+}
+
 pub fn establish_connection(conf: &Config) -> PgConnection {
-    println!("Establishing connection with: {}", &conf.database_url);
-    PgConnection::establish(&conf.database_url[..])
+    let conn_str = build_db_conn_str(conf);
+    println!("Establishing connection with: {}", &conn_str);
+    PgConnection::establish(&conn_str[..])
         .unwrap_or_else(|_| panic!("Error connecting to {}", conf.database_url))
 }
 
