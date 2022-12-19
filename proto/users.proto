@@ -8,6 +8,13 @@ service UsersService {
     rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){}
 }
 
+message User {
+    int32 id = 1;
+    string name = 2;
+    string bio = 3;
+    bool active = 4;
+}
+
 message CreateUserRequest {
     string name = 1; 
     string bio = 2;
@@ -24,6 +31,14 @@ message ReadUserResponse {
     string name = 2;
     string bio = 3;
     bool active = 4;
+}
+
+message ReadUsersRequest {
+    repeated int32 ids = 1;
+}
+
+message ReadUsersResponse {
+    repeated User users = 1;
 }
 
 message UpdateUserRequest {

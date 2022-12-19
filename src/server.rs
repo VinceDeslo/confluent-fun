@@ -22,6 +22,8 @@ use crate::db::{
     create_user,
     get_users,
     get_user,
+    update_user,
+    delete_user
 };
 
 #[derive(Debug)]
@@ -53,8 +55,6 @@ impl UsersService for Service {
         &self,
         request: Request<ReadUserRequest>,
     ) -> Result<Response<ReadUserResponse>, Status> {
-        todo!();
-
         println!("start Read User operation.");
         let conn = &mut establish_connection(&self.config);
         let req = request.get_ref();
@@ -76,14 +76,39 @@ impl UsersService for Service {
         &self,
         request: Request<UpdateUserRequest>,
     ) -> Result<Response<UpdateUserResponse>, Status> {
-        todo!();
+        println!("start Update User operation.");
+        let conn = &mut establish_connection(&self.config);
+        let req = request.get_ref();
+        println!("Request payload: {:#?}", &req);
+
+        let user = update_user(conn, req.id, &req.name, &req.bio);
+        let reply = users::UpdateUserResponse {
+            id: user.id,
+            name: user.name,
+            bio: user.bio,
+            active: user.active,
+        };
+
+        println!("end Update User operation.");
+        Ok(Response::new(reply))
     }
 
     async fn delete_user(
         &self,
         request: Request<DeleteUserRequest>,
     ) -> Result<Response<DeleteUserResponse>, Status> {
-        todo!();
+        println!("start Delete User operation.");
+        let conn = &mut establish_connection(&self.config);
+        let req = request.get_ref();
+        println!("Request payload: {:#?}", &req);
+
+        let count = delete_user(conn, req.id);
+        let reply = users::DeleteUserResponse {
+            deleted: count as i32,
+        };
+
+        println!("end Delete User operation.");
+        Ok(Response::new(reply))
     }
 }
 

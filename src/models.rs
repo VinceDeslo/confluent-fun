@@ -1,3 +1,7 @@
+pub mod grpc_users {
+    tonic::include_proto!("users");
+}
+
 use diesel::prelude::*;
 use crate::schema::users;
 
