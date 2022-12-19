@@ -12,8 +12,9 @@ use users::users_service_server::{UsersService, UsersServiceServer};
 use users::{
     CreateUserRequest, CreateUserResponse,
     ReadUserRequest, ReadUserResponse,
+    ReadUsersRequest, ReadUsersResponse,
     UpdateUserRequest, UpdateUserResponse, 
-    DeleteUserRequest, DeleteUserResponse,
+    DeleteUserRequest, DeleteUserResponse
 };
 
 use crate::config::{Config, load_config};
@@ -29,6 +30,17 @@ use crate::db::{
 #[derive(Debug)]
 pub struct Service {
     config: Config,
+}
+
+impl From<models::User> for users::User {
+    fn from(p: models::User) -> Self {
+        Self {
+          id: p.id,
+          name: p.name,
+          bio: p.bio,
+          active: p.active
+        }
+      }
 }
 
 #[tonic::async_trait]
@@ -69,6 +81,25 @@ impl UsersService for Service {
         };
 
         println!("end Read User operation.");
+        Ok(Response::new(reply))
+    }
+
+    async fn read_users(&self, request: Request<ReadUsersRequest>) -> Result<Response<ReadUsersResponse>, Status> {
+        println!("start Read Users operation.");
+        let conn = &mut establish_connection(&self.config);
+        let req = request.get_ref();
+        println!("Request payload: {:#?}", &req);
+
+        let users = get_users(conn);
+        let converted_users: Vec<users::User> = users
+            .iter()
+            .map(|u| users::User::from(u.clone()))
+            .collect();
+        let reply = users::ReadUsersResponse {
+            users: converted_users
+        };
+
+        println!("end Update User operation.");
         Ok(Response::new(reply))
     }
 

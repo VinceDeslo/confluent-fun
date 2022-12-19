@@ -28,7 +28,6 @@ pub fn get_users(conn: &mut PgConnection) -> Vec<User> {
 
     users
         .filter(active.eq(true))
-        .limit(10)
         .load::<User>(conn)
         .expect("Error loading users")
 }
@@ -57,13 +56,13 @@ pub fn create_user(
 
 pub fn update_user(
     conn: &mut PgConnection, 
-    id: i32,
+    user_id: i32,
     new_name: &str,
     new_bio: &str,
 ) -> User {
     use crate::schema::users::dsl::*;
 
-    diesel::update(users.find(id))
+    diesel::update(users.filter(id.eq(user_id)))
         .set((name.eq(new_name), bio.eq(new_bio)))
         .get_result::<User>(conn)
         .expect("Error updating existing user.")

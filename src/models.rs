@@ -5,7 +5,7 @@ pub mod grpc_users {
 use diesel::prelude::*;
 use crate::schema::users;
 
-#[derive(Queryable, Debug)]
+#[derive(Queryable, Debug, Clone)]
 pub struct User {
     pub id: i32,
     pub name: String,
