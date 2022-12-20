@@ -10,11 +10,16 @@ use tonic::{transport::Server, Request, Response, Status };
 
 use users::users_service_server::{UsersService, UsersServiceServer};
 use users::{
-    CreateUserRequest, CreateUserResponse,
-    ReadUserRequest, ReadUserResponse,
-    ReadUsersRequest, ReadUsersResponse,
-    UpdateUserRequest, UpdateUserResponse, 
-    DeleteUserRequest, DeleteUserResponse
+    CreateUserRequest, 
+    CreateUserResponse,
+    ReadUserRequest, 
+    ReadUserResponse,
+    ReadUsersRequest, 
+    ReadUsersResponse,
+    UpdateUserRequest, 
+    UpdateUserResponse, 
+    DeleteUserRequest, 
+    DeleteUserResponse
 };
 
 use crate::config::{Config, load_config};
@@ -33,12 +38,12 @@ pub struct Service {
 }
 
 impl From<models::User> for users::User {
-    fn from(p: models::User) -> Self {
+    fn from(u: models::User) -> Self {
         Self {
-          id: p.id,
-          name: p.name,
-          bio: p.bio,
-          active: p.active
+          id: u.id,
+          name: u.name,
+          bio: u.bio,
+          active: u.active
         }
       }
 }
@@ -73,11 +78,9 @@ impl UsersService for Service {
         println!("Request payload: {:#?}", &req);
 
         let user = get_user(conn, req.id);
+
         let reply = users::ReadUserResponse {
-            id: user.id,
-            name: user.name,
-            bio: user.bio,
-            active: user.active,
+            user: convert_user_for_transport(&user)
         };
 
         println!("end Read User operation.");
@@ -91,10 +94,11 @@ impl UsersService for Service {
         println!("Request payload: {:#?}", &req);
 
         let users = get_users(conn);
-        let converted_users: Vec<users::User> = users
+        let converted_users = users
             .iter()
             .map(|u| users::User::from(u.clone()))
             .collect();
+
         let reply = users::ReadUsersResponse {
             users: converted_users
         };
@@ -113,11 +117,9 @@ impl UsersService for Service {
         println!("Request payload: {:#?}", &req);
 
         let user = update_user(conn, req.id, &req.name, &req.bio);
+
         let reply = users::UpdateUserResponse {
-            id: user.id,
-            name: user.name,
-            bio: user.bio,
-            active: user.active,
+            user: convert_user_for_transport(&user),
         };
 
         println!("end Update User operation.");
@@ -141,6 +143,10 @@ impl UsersService for Service {
         println!("end Delete User operation.");
         Ok(Response::new(reply))
     }
+}
+
+fn convert_user_for_transport(user: &models::User) -> Option<users::User> {
+    return Some(users::User::from(user.clone()))
 }
 
 #[tokio::main]

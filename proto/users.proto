@@ -28,10 +28,7 @@ message ReadUserRequest {
     int32 id = 1;
 }
 message ReadUserResponse {
-    int32 id = 1;
-    string name = 2;
-    string bio = 3;
-    bool active = 4;
+    User user = 1;
 }
 
 message ReadUsersRequest {
@@ -48,10 +45,7 @@ message UpdateUserRequest {
     string bio = 3;
 }
 message UpdateUserResponse {
-    int32 id = 1;
-    string name = 2;
-    string bio = 3;
-    bool active = 4;
+    User user = 1;
 }
 
 message DeleteUserRequest { 
