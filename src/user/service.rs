@@ -1,4 +1,4 @@
-use crate::config::Config;
+use crate::{config::Config, events::producer::EventProducer};
 use tonic::{Request, Response, Status };
 use crate::users::{
     users_service_server::UsersService,
@@ -21,8 +21,8 @@ use super::{
     delete::delete_user_operation,
 };
 
-#[derive(Debug)]
 pub struct Service {
+    pub event_producer: EventProducer,
     pub config: Config,
 }
 

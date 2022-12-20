@@ -5,6 +5,9 @@ use crate::users::{
     CreateUserRequest, 
     CreateUserResponse,
 };
+use crate::events::{
+    create_user::create_user_event,
+};
 
 pub fn create_user_operation(
     service: &Service,
@@ -16,6 +19,8 @@ pub fn create_user_operation(
     println!("Request payload: {:#?}", &req);
 
     let user = create_user(conn, &req.name, &req.bio);
+    create_user_event(service, &user);
+
     let reply = CreateUserResponse {
         id: user.id,
     };

@@ -3,9 +3,10 @@ pub mod grpc_users {
 }
 
 use diesel::prelude::*;
+use serde::{Serialize};
 use crate::schema::users;
 
-#[derive(Queryable, Debug, Clone)]
+#[derive(Queryable, Debug, Clone, Serialize)]
 pub struct User {
     pub id: i32,
     pub name: String,

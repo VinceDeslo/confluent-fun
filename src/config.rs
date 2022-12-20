@@ -11,9 +11,9 @@ pub struct Config {
     pub database_password: String,
     pub database_name: String,
     pub database_port: String,
-    confluent_bootstrap_server: String,
-    confluent_api_key: String,
-    confluent_api_secret: String,
+    pub confluent_bootstrap_server: String,
+    pub confluent_api_key: String,
+    pub confluent_api_secret: String,
 }
 
 pub fn load_config() -> Config {
