@@ -6,6 +6,7 @@ use crate::users::{
     UpdateUserResponse, 
     UpdateUserRequest
 };
+use crate::events::update_user::update_user_event;
 
 pub fn update_user_operation(
     service: &Service,
@@ -17,6 +18,7 @@ pub fn update_user_operation(
     println!("Request payload: {:#?}", &req);
 
     let user = update_user(conn, req.id, &req.name, &req.bio);
+    update_user_event(service, &user);
 
     let reply = UpdateUserResponse {
         user: convert_user_for_transport(&user),

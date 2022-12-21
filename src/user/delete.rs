@@ -5,6 +5,7 @@ use crate::users::{
     DeleteUserRequest, 
     DeleteUserResponse,
 };
+use crate::events::delete_user::delete_user_event;
 
 pub fn delete_user_operation(
     service: &Service,
@@ -16,6 +17,8 @@ pub fn delete_user_operation(
     println!("Request payload: {:#?}", &req);
 
     let count = delete_user(conn, req.id);
+    delete_user_event(service, req.id);
+
     let reply = DeleteUserResponse {
         deleted: count as i32,
     };
