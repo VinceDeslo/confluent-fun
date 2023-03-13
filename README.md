@@ -1,4 +1,4 @@
-# EDA Fun
+# Confluent Fun
 
 This is a repo to play around with building a simple stateful microservice with an event driven approach.
 Here is the breakdown:
